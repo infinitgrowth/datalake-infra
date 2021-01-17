@@ -38,5 +38,46 @@ Resources:
         - Key: Name
           Value: !Sub "${DeploymentName}-dev-redshift"
   # Redshift cluster
-
+  RedshiftCluster:
+    Type: AWS::Redshift::Cluster
+    Properties:
+      AllowVersionUpgrade: true
+      # Change value once data is in production
+      AutomatedSnapshotRetentionPeriod: 0
+      AvailabilityZone: us-east-1a
+      ClusterIdentifier: oxio-datawarehouse
+#      ClusterParameterGroupName: String
+#      create security group here and reference
+#      ClusterSecurityGroups:
+#        - nn-datawarehouse-to-laptopclient
+      ClusterSubnetGroupName: !Ref RedshiftClusterSubnetGroup
+      ClusterType: single-node
+#      ClusterVersion: String
+      DBName: dev
+#      ElasticIp: String
+      # Add encryption in production
+#      Encrypted: Boolean
+#      HsmClientCertificateIdentifier: String
+#      HsmConfigurationIdentifier: String
+      IamRoles:
+        - arn:aws:iam::208109157855:role/MyNorthVirginiaRedshiftRole
+#      KmsKeyId: String
+#      LoggingProperties:
+#        LoggingProperties
+      MasterUsername: awsuser
+#      MasterUserPassword:
+      NodeType: dc2.large
+#      NumberOfNodes: 1
+#      OwnerAccount: String
+#      Port: 5439
+#      PreferredMaintenanceWindow: String
+#      PubliclyAccessible: Boolean
+#      SnapshotClusterIdentifier: String
+#      SnapshotIdentifier: String
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-redshift"#      VpcSecurityGroupIds:
+#        - String
 
