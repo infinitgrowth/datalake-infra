@@ -1,0 +1,12 @@
+---
+template_path: vpc.yaml
+parameters:
+  DeploymentName: "data-platform"
+  CidrBlock: 10.0.0.0/16
+  PublicSubnetAz1Cidr: 10.0.0.0/24
+  PublicSubnetAz2Cidr: 10.0.1.0/24
+  InternalSubnetAz1Cidr: 10.0.16.0/20
+  InternalSubnetAz2Cidr: 10.0.32.0/20
+stack_tags:
+  DeploymentMethod: "sceptre"
+  DeploymentName: "data-platform"

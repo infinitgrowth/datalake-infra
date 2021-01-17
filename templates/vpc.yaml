@@ -1,0 +1,102 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Data Platform Network Stack
+Parameters:
+  CidrBlock:
+    Type: String
+  DeploymentName:
+    Description: The name of the deployment
+    Type: String
+  PublicSubnetAz1Cidr:
+    Description: The CIDR of the Public subnet in the first AZ
+    Type: String
+  PublicSubnetAz2Cidr:
+    Description: The CIDR of the Public subnet in the second AZ
+    Type: String
+  InternalSubnetAz1Cidr:
+    Description: The CIDR of the Public subnet in the first AZ
+    Type: String
+  InternalSubnetAz2Cidr:
+    Description: The CIDR of the Public subnet in the second AZ
+    Type: String
+Resources:
+  Vpc:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock:
+        Ref: CidrBlock
+      Tags:
+        - Key: Name
+          Value: Data Platform
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+  PublicSubnetAz1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1a"
+      CidrBlock: !Ref PublicSubnetAz1Cidr
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-public-az1-subnet"
+      VpcId: !Ref Vpc
+  PublicSubnetAz2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1b"
+      CidrBlock: !Ref PublicSubnetAz2Cidr
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-public-az2-subnet"
+      VpcId: !Ref Vpc
+  InternalSubnetAz1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1a"
+      CidrBlock: !Ref InternalSubnetAz1Cidr
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-internal-az1-subnet"
+      VpcId: !Ref Vpc
+  InternalSubnetAz2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "us-east-1b"
+      CidrBlock: !Ref InternalSubnetAz2Cidr
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-internal-az2-subnet"
+      VpcId: !Ref Vpc
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-internal-az2-subnet"
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId:
+        Ref: InternetGateway
+      VpcId:
+        Ref: Vpc
+#      Tags:
+#        - Key: DeploymentName
+#          Value: !Ref DeploymentName
+#        - Key: Name
+#          Value: !Sub "${DeploymentName}-gateway"
+Outputs:
+  VpcId:
+    Value:
+      Ref: Vpc

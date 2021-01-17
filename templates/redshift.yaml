@@ -1,0 +1,42 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+# Description
+Description: Data Science Redshift stack
+# Parameters
+Parameters:
+  DeploymentName:
+    Description: The name of the deployment
+    Type: String
+  RedshiftPublicSubnetIDAz1:
+    Description: Public subnet ID Az1
+    Type: String
+  RedshiftPublicSubnetIDAz2:
+    Description: Public subnet ID Az2
+    Type: String
+  RedshiftInternalSubnetIDAz1:
+    Description: Internal subnet ID Az1
+    Type: String
+  RedshiftInternalSubnetIDAz2:
+    Description: Internal subnet ID Az2
+    Type: String
+# Resources
+Resources:
+  # Redshift IAM role for full redshift, redshift spectrum and glue access
+  # Redshift subnet group
+  RedshiftClusterSubnetGroup:
+    Type: AWS::Redshift::ClusterSubnetGroup
+    Properties:
+      Description: Redshift cluster subnet group
+      SubnetIds:
+        - !Ref RedshiftPublicSubnetIDAz1
+        - !Ref RedshiftPublicSubnetIDAz2
+        - !Ref RedshiftInternalSubnetIDAz1
+        - !Ref RedshiftInternalSubnetIDAz2
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-redshift"
+  # Redshift cluster
+
+

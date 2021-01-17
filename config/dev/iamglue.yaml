@@ -1,0 +1,9 @@
+---
+# create a loop that allows me to list all the permission principals with their related info in a dictionary
+template_path: iamglue.yaml
+stack_name: "{{ project_code }}-dev-iam-glue"
+parameters:
+  DeploymentName: "{{ stack_group_config.project_code }}"
+stack_tags:
+  DeploymentMethod: "sceptre"
+  DeploymentName: "{{ stack_group_config.project_code }}"

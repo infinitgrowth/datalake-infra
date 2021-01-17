@@ -1,0 +1,59 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+# Description
+Description: Data Science s3 lake stack
+# Parameters
+Parameters:
+  DeploymentName:
+    Description: The name of the deployment
+    Type: String
+# Resources
+Resources:
+  # s3 buckets
+  S3RawLake:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      # format fitapp-<project>-<attribute>
+      BucketName: fitapp-datalake-raw
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-s3"
+  S3PreparedLake:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: fitapp-datalake-prepared
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-s3"
+  S3ConsumableLake:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: fitapp-datalake-consumable
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-s3"
+  S3FeatureLake:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: fitapp-datalake-featurestore
+      Tags:
+        - Key: DeploymentName
+          Value: !Ref DeploymentName
+        - Key: Name
+          Value: !Sub "${DeploymentName}-dev-s3"
+
+# s3 bucket policy
+## raw bucket very limited internal access
+## prepared bucket internal access (potentially advanced clients)
+## consumable bucket internal visualizations and advanced clients
+## feature store bucket internal access

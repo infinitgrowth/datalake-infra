@@ -1,0 +1,18 @@
+---
+template_path: redshift.yaml
+dependencies:
+  - dev/vpc.yaml
+parameters:
+  DeploymentName: "data-platform"
+  RedshiftPublicSubnetIDAz1: "subnet-050d3d3573bd8a7f5"
+  RedshiftPublicSubnetIDAz2: "subnet-0206b58af9af5070e"
+  RedshiftInternalSubnetIDAz1: "subnet-013b9eca036cc5cc8"
+  RedshiftInternalSubnetIDAz2: "subnet-05e13463623578997"
+#  CidrBlock: 10.0.0.0/16
+#  PublicSubnetAz1Cidr: 10.0.0.0/24
+#  PublicSubnetAz2Cidr: 10.0.1.0/24
+#  InternalSubnetAz1Cidr: 10.0.16.0/20
+#  InternalSubnetAz2Cidr: 10.0.32.0/20
+stack_tags:
+  DeploymentMethod: "sceptre"
+  DeploymentName: "data-platform-redshift"
